@@ -98,6 +98,8 @@ h1 { font: 700 clamp(2.6rem, 9vw, 7rem)/.9 var(--chiffres); margin: 0; color: va
 
 /* -- le jeu en main ---------------------------------------------------------- */
 .jeu { width: min(1180px, 100% - 40px); margin: clamp(80px, 12vw, 150px) auto 0; }
+.film { margin-top: 36px; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.5); background: var(--crepuscule); }
+.film video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
 .vitrine { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 3vw, 40px); align-items: start; margin-top: 36px; }
 .vitrine figure { margin: 0; }
 .vitrine figure:nth-child(2) { margin-top: 60px; }
@@ -187,6 +189,11 @@ footer a { color: var(--brume); }
   <section class="jeu" aria-labelledby="t-jeu">
     <h2 id="t-jeu" data-i18n="t_jeu">Une vraie ville dans la poche</h2>
     <p class="intro" data-i18n="i_jeu">Tout se joue au doigt, en portrait comme en paysage.</p>
+    <div class="film">
+      <video controls preload="none" playsinline poster="img/bande-annonce.jpg" aria-label="Bande-annonce de Metropix (32 secondes)">
+        <source src="img/bande-annonce.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="vitrine">
       <figure>
         <div class="telephone"><img src="img/jeu_centre.jpg" alt="Le centre-ville vu de dessus, avec la barre d'outils" loading="lazy"></div>
