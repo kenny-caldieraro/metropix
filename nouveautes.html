@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nouveautés · Metropix</title>
+<meta name="description" content="Les nouveautés de chaque version de Metropix, jeu de gestion de ville en pixel art.">
+<link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&family=Jersey+10&family=Silkscreen:wght@700&display=swap" rel="stylesheet">
+<style>
+:root { --nuit: #141726; --or: #e2b03c; --lueur: #ffd27f; --creme: #f0ead8; --brume: #a7adc0; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--nuit); color: var(--creme); font: 400 1.0625rem/1.65 "Figtree", system-ui, sans-serif; }
+a { color: var(--lueur); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--or); outline-offset: 3px; }
+header, main, footer { width: min(760px, 100% - 40px); margin: 0 auto; }
+header { padding: 40px 0 10px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.retour { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--or); font: 700 1.4rem "Silkscreen", monospace; }
+.retour img { width: 44px; border-radius: 22%; }
+.langue button { font: 700 .85rem inherit; color: var(--creme); background: none; border: 1px solid rgba(240,234,216,.25); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+.langue button[aria-pressed="true"] { background: var(--or); color: var(--nuit); border-color: var(--or); }
+h1 { font: 400 clamp(2.6rem, 8vw, 4rem)/1 "Jersey 10", monospace; margin: 40px 0 8px; }
+.version { margin: 50px 0 0; padding-top: 24px; border-top: 1px solid rgba(240,234,216,.14); }
+.version h2 { font: 400 2.2rem/1 "Jersey 10", monospace; color: var(--lueur); margin: 0; }
+.version time { color: var(--brume); }
+.version ul { padding-left: 1.2em; }
+.version li { margin: 6px 0; }
+.version li::marker { color: var(--or); }
+footer { margin-top: 80px; padding: 26px 0 50px; border-top: 1px solid rgba(240,234,216,.14); color: var(--brume); font-size: .95rem; }
+[lang="en"] .fr, [lang="fr"] .en { display: none; }
+</style>
+</head>
+<body>
+<header>
+  <a class="retour" href="./"><img src="icon.png" alt="">METROPIX</a>
+  <div class="langue" role="group" aria-label="Langue">
+    <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+<main>
+  <h1><span class="fr">Nouveautés</span><span class="en">What's new</span></h1>
+  <p class="fr">Ce qui change à chaque version. Les mises à jour sont gratuites pour tout le monde.</p>
+  <p class="en">What changes in each version. Updates are free for everyone.</p>
+
+  <section class="version">
+    <h2>Version 1.0</h2>
+    <time datetime="2026-11"><span class="fr">Novembre 2026</span><span class="en">November 2026</span></time>
+    <div class="fr">
+      <p>Première version de Metropix sur iPhone, iPad et Android.</p>
+      <ul>
+        <li>Une ville à fonder en 1950, 1975, 2000 ou 2025, avec quatre époques d'architecture.</li>
+        <li>Routes, avenues, voies rapides, rail, tram et métro ; électricité, eau, égouts et déchets.</li>
+        <li>Quartiers avec leurs impôts, leurs règles et leurs spécialisations.</li>
+        <li>Pollution de l'air, de l'eau, des sols et du bruit, vent et bilan carbone.</li>
+        <li>Événements à trancher, conseillers, villes voisines, catastrophes facultatives.</li>
+        <li>Jour et nuit, saisons, pluie et neige ; bus, secours, bateaux et avions.</li>
+        <li>20 succès Game Center, sauvegardes iCloud entre iPhone et iPad, mini-carte, mode photo.</li>
+        <li>Tutoriel guidé, bac à sable, scénarios, en français et en anglais.</li>
+      </ul>
+    </div>
+    <div class="en">
+      <p>First release of Metropix on iPhone, iPad and Android.</p>
+      <ul>
+        <li>Found a city in 1950, 1975, 2000 or 2025, with four architectural eras.</li>
+        <li>Streets, avenues, highways, rail, trams and metro; power, water, sewage and waste.</li>
+        <li>Districts with their own taxes, rules and specializations.</li>
+        <li>Air, water, soil and noise pollution, wind and carbon footprint.</li>
+        <li>Events to decide, advisors, neighboring cities, optional disasters.</li>
+        <li>Day and night, seasons, rain and snow; buses, emergency crews, boats and planes.</li>
+        <li>20 Game Center achievements, iCloud saves across iPhone and iPad, minimap, photo mode.</li>
+        <li>Guided tutorial, sandbox mode, scenarios, in English and French.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<footer><a href="./">metropix</a> · <a href="mailto:contact@webplayground.fr">contact@webplayground.fr</a></footer>
+<script>
+function setLang(l) {
+  document.documentElement.lang = l;
+  document.querySelectorAll(".langue button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
+  try { localStorage.setItem("metropix-lang", l); } catch (e) {}
+}
+document.querySelectorAll(".langue button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+let saved = null;
+try { saved = localStorage.getItem("metropix-lang"); } catch (e) {}
+setLang(saved || ((navigator.language || "fr").startsWith("fr") ? "fr" : "en"));
+</script>
+</body>
+</html>
