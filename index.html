@@ -229,7 +229,7 @@ footer a { color: var(--brume); }
     </div>
     <figure class="paysage">
       <video muted loop playsinline preload="auto" poster="img/bande-annonce.jpg" aria-hidden="true">
-        <source src="img/boucle.mp4" type="video/mp4">
+        <source src="img/boucle-jeu.mp4" type="video/mp4">
       </video>
       <button type="button" class="lecture" hidden data-i18n="voir">Voir le jeu</button>
       <figcaption>Le jeu en mouvement</figcaption>
@@ -423,7 +423,11 @@ let lang = "fr";
   const video = document.querySelector(".paysage video");
   const bouton = document.querySelector(".lecture");
   const montrer = () => { bouton.hidden = false; };
-  bouton.addEventListener("click", () => { bouton.hidden = true; video.play().catch(montrer); });
+  bouton.addEventListener("click", () => {
+    bouton.hidden = true;
+    video.load();
+    video.play().catch(() => { montrer(); bouton.textContent = lang === "en" ? "Video unavailable" : "Vidéo indisponible"; });
+  });
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) montrer();
   else video.play().catch(montrer);
 }
