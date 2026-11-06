@@ -3,19 +3,316 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Metropix — Assistance</title>
-<style>body { font-family: -apple-system, system-ui, sans-serif; max-width: 680px; margin: 40px auto; padding: 0 20px; background: #16182a; color: #eee8d6; line-height: 1.6; } h1, h2 { color: #e2b03c; } a { color: #82b0de; } img { image-rendering: pixelated; width: 96px; border-radius: 22px; }</style>
+<title>Metropix · jeu de gestion de ville en pixel art</title>
+<meta name="description" content="Fondez une ville en 1950 et faites-la grandir jusqu'à la ville de demain. Jeu de gestion de ville en pixel art pour iPhone, iPad et Android. Gratuit, sans publicité.">
+<meta property="og:title" content="Metropix">
+<meta property="og:description" content="Bâtissez votre ville en pixel art, de 1950 à la ville de demain.">
+<meta property="og:image" content="https://kenny-caldieraro.github.io/metropix/img/partage.jpg">
+<meta name="theme-color" content="#141726">
+<link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&family=Jersey+10&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --nuit: #141726;
+  --crepuscule: #2b3352;
+  --or: #e2b03c;
+  --lueur: #ffd27f;
+  --brique: #a3523c;
+  --creme: #f0ead8;
+  --brume: #a7adc0;
+  --pixel: "Jersey 10", ui-monospace, monospace;
+  --texte: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  --chiffres: "Silkscreen", ui-monospace, monospace;  /* chiffres pixel lisibles (le 5 de Pixelify ressemble à un 8) */
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--nuit); color: var(--creme); font: 400 1.0625rem/1.6 var(--texte); }
+img { display: block; max-width: 100%; }
+a { color: var(--lueur); }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--or); outline-offset: 3px; }
+.pixel { image-rendering: pixelated; }
+
+/* -- en-tête : la ville la nuit ------------------------------------------- */
+.hero { position: relative; min-height: min(100svh, 920px); display: grid; align-items: end; overflow: hidden; }
+.hero picture, .hero picture img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(20,23,38,.15) 0%, rgba(20,23,38,0) 35%, rgba(20,23,38,.75) 78%, var(--nuit) 100%); }
+.hero-inner { position: relative; z-index: 1; width: min(1180px, 100% - 40px); margin: 0 auto; padding: 0 0 clamp(40px, 8vh, 96px); }
+.marque { display: flex; align-items: center; gap: 18px; }
+.marque img { width: clamp(64px, 9vw, 96px); border-radius: 22%; box-shadow: 0 10px 30px rgba(0,0,0,.45); }
+h1 { font: 700 clamp(2.6rem, 9vw, 7rem)/.9 var(--chiffres); margin: 0; color: var(--or); text-transform: uppercase;
+  text-shadow: 0 .07em 0 #6b4a12, 0 .1em .4em rgba(0,0,0,.5); }
+.accroche { font-size: clamp(1.2rem, 2.4vw, 1.6rem); max-width: 30ch; margin: 18px 0 28px; line-height: 1.35; }
+.stores { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.stores a { display: block; }
+.stores img { height: 54px; width: auto; }
+.stores img[data-badge="google"] { height: 80px; margin: -13px -10px; }
+.prix { color: var(--brume); font-size: .95rem; margin-top: 14px; }
+.langue { position: absolute; top: 18px; right: 20px; z-index: 2; display: flex; gap: 4px;
+  background: rgba(20,23,38,.6); border-radius: 999px; padding: 4px; backdrop-filter: blur(6px); }
+.langue button { font: 700 .85rem var(--texte); color: var(--creme); background: none; border: 0; padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+.langue button[aria-pressed="true"] { background: var(--or); color: var(--nuit); }
+
+/* -- le curseur des époques (l'élément fort de la page) ----------------------- */
+.epoques { width: min(1180px, 100% - 40px); margin: clamp(64px, 10vw, 120px) auto 0; }
+.epoques h2, .jeu h2, .presse h2 { font: 400 clamp(2.4rem, 6vw, 4.2rem)/1 var(--pixel); margin: 0 0 12px; }
+.intro { color: var(--brume); max-width: 60ch; margin: 0 0 28px; }
+.scene { position: relative; aspect-ratio: 3 / 2; border-radius: 14px; overflow: hidden; background: var(--crepuscule);
+  box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+.scene img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .7s ease; }
+.scene img.actif { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .scene img { transition: none; } }
+.annee { position: absolute; left: 22px; bottom: 18px; font: 700 clamp(2.6rem, 8vw, 5.6rem)/1 var(--chiffres); color: var(--creme);
+  text-shadow: 0 4px 0 rgba(0,0,0,.35), 0 0 30px rgba(0,0,0,.4); pointer-events: none; }
+.frise { position: relative; margin-top: 26px; }
+.frise input { width: 100%; appearance: none; background: none; height: 34px; margin: 0; cursor: pointer; }
+.frise input::-webkit-slider-runnable-track { height: 6px; background: linear-gradient(90deg, var(--brique), var(--or), #7fc4d8, #8cc46a); border-radius: 3px; }
+.frise input::-moz-range-track { height: 6px; background: linear-gradient(90deg, var(--brique), var(--or), #7fc4d8, #8cc46a); border-radius: 3px; }
+.frise input::-webkit-slider-thumb { appearance: none; width: 28px; height: 28px; margin-top: -11px; background: var(--creme);
+  border: 4px solid var(--nuit); box-shadow: 0 0 0 3px var(--or); border-radius: 6px; }
+.frise input::-moz-range-thumb { width: 22px; height: 22px; background: var(--creme); border: 4px solid var(--nuit); box-shadow: 0 0 0 3px var(--or); border-radius: 6px; }
+.reperes { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 6px; }
+.reperes button { background: none; border: 0; color: var(--brume); font: 700 1rem var(--chiffres); text-align: left; padding: 6px 0; cursor: pointer; }
+.reperes button:nth-child(2), .reperes button:nth-child(3) { text-align: center; }
+.reperes button:last-child { text-align: right; }
+.reperes button[aria-pressed="true"] { color: var(--or); }
+.legende { min-height: 3.3em; margin: 14px 0 0; max-width: 62ch; }
+.legende strong { color: var(--lueur); font-weight: 700; }
+
+/* -- le jeu en main ---------------------------------------------------------- */
+.jeu { width: min(1180px, 100% - 40px); margin: clamp(80px, 12vw, 150px) auto 0; }
+.vitrine { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 3vw, 40px); align-items: start; margin-top: 36px; }
+.vitrine figure { margin: 0; }
+.vitrine figure:nth-child(2) { margin-top: 60px; }
+.telephone { border-radius: 34px; padding: 9px; background: #232634; box-shadow: inset 0 0 0 2px #3a3f52, 0 26px 60px rgba(0,0,0,.5); }
+.telephone img { border-radius: 26px; width: 100%; aspect-ratio: 1206 / 2622; object-fit: cover; }
+.vitrine figcaption { margin-top: 18px; }
+.vitrine h3 { font: 400 1.75rem/1.1 var(--pixel); color: var(--lueur); margin: 0 0 6px; }
+.vitrine p { margin: 0; color: var(--brume); }
+.aussi { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px 40px; margin: 70px 0 0; padding: 0; list-style: none; }
+.aussi li { padding: 14px 0; border-top: 1px solid rgba(240,234,216,.14); }
+.aussi strong { display: block; color: var(--creme); }
+.aussi span { color: var(--brume); }
+
+/* -- presse, assistance, pied de page --------------------------------------------- */
+.presse { width: min(1180px, 100% - 40px); margin: clamp(80px, 12vw, 150px) auto 0; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; }
+.presse p { color: var(--brume); max-width: 52ch; }
+.bouton { display: inline-block; margin-top: 10px; padding: 14px 22px; border-radius: 10px; background: var(--or); color: var(--nuit);
+  font: 700 1rem var(--texte); text-decoration: none; }
+.faq dt { font-weight: 700; margin-top: 16px; }
+.faq dd { margin: 4px 0 0; color: var(--brume); }
+footer { width: min(1180px, 100% - 40px); margin: 110px auto 0; padding: 30px 0 50px; border-top: 1px solid rgba(240,234,216,.14);
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px; color: var(--brume); font-size: .95rem; }
+footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
+footer a { color: var(--brume); }
+
+@media (max-width: 760px) {
+  .vitrine { grid-template-columns: 1fr; max-width: 360px; margin-inline: auto; }
+  .vitrine figure:nth-child(2) { margin-top: 0; }
+  .presse { grid-template-columns: 1fr; }
+  .stores img { height: 48px; }
+  .stores img[data-badge="google"] { height: 71px; margin: -11px -9px; }
+}
+</style>
 </head>
 <body>
-<img src="icon.png" alt="Icône de Metropix">
-<h1>Metropix</h1>
-<p>Bâtissez et gérez votre ville, de la bourgade de 1950 à la métropole.</p>
-<h2>Assistance</h2>
-<p>Une question, un bug, une idée ? Écrivez à <a href="mailto:contact@webplayground.fr">contact@webplayground.fr</a>.</p>
-<h2>Questions fréquentes</h2>
-<p><strong>Ma partie est-elle sauvegardée ?</strong> Oui, automatiquement chaque année de jeu et à la fermeture,
-uniquement sur votre appareil.</p>
-<p><strong>Le jeu a-t-il besoin d'Internet ?</strong> Non, il fonctionne entièrement hors connexion.</p>
-<p><a href="confidentialite.html">Politique de confidentialité</a> · <a href="cgu.html">Conditions générales d'utilisation</a></p>
+
+<header class="hero">
+  <picture>
+    <source media="(max-aspect-ratio: 4/5)" srcset="img/titre.jpg">
+    <img src="img/panorama.jpg" alt="Une ville en pixel art au crépuscule : vieux quartier de briques, tours de verre et immeubles végétalisés au bord d'une rivière" data-alt-en="A pixel-art city at dusk: old brick quarter, glass towers and green buildings along a river">
+  </picture>
+  <div class="langue" role="group" aria-label="Langue">
+    <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+  <div class="hero-inner">
+    <div class="marque">
+      <img src="icon.png" alt="" width="96" height="96">
+      <h1>Metropix</h1>
+    </div>
+    <p class="accroche" data-i18n="accroche">Fondez une ville en 1950 et faites-la grandir jusqu'à la ville de demain.</p>
+    <div class="stores">
+      <a href="https://apps.apple.com/app/id6831504134" data-i18n-href="apple">
+        <img data-badge="apple" src="img/appstore_en.svg" alt="Télécharger dans l'App Store" data-alt-en="Download on the App Store"></a>
+      <a href="https://play.google.com/store/apps/details?id=com.kennycaldieraro.metropix">
+        <img data-badge="google" src="img/googleplay_fr.png" alt="Disponible sur Google Play" data-alt-en="Get it on Google Play"></a>
+    </div>
+    <p class="prix" data-i18n="prix">Gratuit, sans publicité, sans connexion. iPhone, iPad et Android.</p>
+  </div>
+</header>
+
+<main>
+  <section class="epoques" aria-labelledby="t-epoques">
+    <h2 id="t-epoques" data-i18n="t_epoques">Un carrefour, quatre époques</h2>
+    <p class="intro" data-i18n="i_epoques">Chaque bâtiment garde le style de l'année où il a été construit. Faites glisser le temps.</p>
+    <div class="scene">
+      <img class="pixel actif" src="img/epoque_1950.jpg" alt="Le carrefour en 1950" data-annee="1950">
+      <img class="pixel" src="img/epoque_1975.jpg" alt="Le carrefour en 1975" data-annee="1975" loading="lazy">
+      <img class="pixel" src="img/epoque_2000.jpg" alt="Le carrefour en 2000" data-annee="2000" loading="lazy">
+      <img class="pixel" src="img/epoque_2025.jpg" alt="Le carrefour en 2025" data-annee="2025" loading="lazy">
+      <div class="annee" aria-hidden="true">1950</div>
+    </div>
+    <div class="frise">
+      <label class="sr" for="temps" style="position:absolute;left:-9999px" data-i18n="l_temps">Année</label>
+      <input id="temps" type="range" min="0" max="3" step="1" value="0" aria-valuetext="1950">
+      <div class="reperes">
+        <button type="button" data-i="0" aria-pressed="true">1950</button>
+        <button type="button" data-i="1" aria-pressed="false">1975</button>
+        <button type="button" data-i="2" aria-pressed="false">2000</button>
+        <button type="button" data-i="3" aria-pressed="false">2025</button>
+      </div>
+    </div>
+    <p class="legende" aria-live="polite"></p>
+  </section>
+
+  <section class="jeu" aria-labelledby="t-jeu">
+    <h2 id="t-jeu" data-i18n="t_jeu">Une vraie ville dans la poche</h2>
+    <p class="intro" data-i18n="i_jeu">La profondeur des grands jeux de gestion, pensée pour le doigt, en portrait comme en paysage.</p>
+    <div class="vitrine">
+      <figure>
+        <div class="telephone"><img src="img/jeu_centre.jpg" alt="Le centre-ville vu de dessus, avec la barre d'outils" loading="lazy"></div>
+        <figcaption><h3 data-i18n="f1_t">Tracez, zonez, regardez pousser</h3>
+          <p data-i18n="f1">Rues, avenues, tram, électricité, eau et égouts : les quartiers se densifient si vous les servez bien.</p></figcaption>
+      </figure>
+      <figure>
+        <div class="telephone"><img src="img/jeu_evenement.jpg" alt="Une décision à prendre : une usine chimique veut s'installer" loading="lazy"></div>
+        <figcaption><h3 data-i18n="f2_t">Tranchez en maire</h3>
+          <p data-i18n="f2">Une usine chimique, une grève, un festival : chaque choix a un prix et des conséquences visibles dans la ville.</p></figcaption>
+      </figure>
+      <figure>
+        <div class="telephone"><img src="img/jeu_nuit.jpg" alt="La ville de nuit, fenêtres allumées" loading="lazy"></div>
+        <figcaption><h3 data-i18n="f3_t">Jour, nuit et saisons</h3>
+          <p data-i18n="f3">Les fenêtres s'allument le soir, la neige tombe en hiver, le vent pousse les fumées des usines.</p></figcaption>
+      </figure>
+    </div>
+    <ul class="aussi">
+      <li><strong data-i18n="a1_t">Quartiers et politiques</strong><span data-i18n="a1">Impôts locaux, zones piétonnes, spécialisations touristiques ou high-tech.</span></li>
+      <li><strong data-i18n="a2_t">Pollution et climat</strong><span data-i18n="a2">Air, eau, sols, bruit et bilan carbone, avec le vent qui compte.</span></li>
+      <li><strong data-i18n="a3_t">Villes voisines</strong><span data-i18n="a3">Vendez votre électricité, achetez de l'eau, échangez vos déchets.</span></li>
+      <li><strong data-i18n="a4_t">20 succès Game Center</strong><span data-i18n="a4">De la première maison à la mégapole de 2050.</span></li>
+      <li><strong data-i18n="a5_t">Vos parties partout</strong><span data-i18n="a5">Sauvegardes iCloud entre iPhone et iPad, trois emplacements.</span></li>
+      <li><strong data-i18n="a6_t">Français et anglais</strong><span data-i18n="a6">Tutoriel guidé, bac à sable, scénarios et mode photo.</span></li>
+    </ul>
+  </section>
+
+  <section class="presse" aria-labelledby="t-presse">
+    <div>
+      <h2 id="t-presse" data-i18n="t_presse">Presse et créateurs</h2>
+      <p data-i18n="p_presse">Logo, icône, illustrations, captures et textes de présentation en français et en anglais, libres d'utilisation pour parler du jeu.</p>
+      <a class="bouton" href="metropix-presse.zip" download data-i18n="b_presse">Télécharger le dossier de presse</a>
+    </div>
+    <div>
+      <h2 data-i18n="t_aide">Assistance</h2>
+      <dl class="faq">
+        <dt data-i18n="q1">Une question, un bug, une idée ?</dt>
+        <dd><a href="mailto:contact@webplayground.fr">contact@webplayground.fr</a></dd>
+        <dt data-i18n="q2">Ma partie est-elle sauvegardée ?</dt>
+        <dd data-i18n="r2">Oui, automatiquement chaque année de jeu et à la fermeture. Sur iPhone et iPad, elle suit aussi votre compte iCloud.</dd>
+        <dt data-i18n="q3">Faut-il une connexion Internet ?</dt>
+        <dd data-i18n="r3">Non, le jeu fonctionne entièrement hors connexion.</dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© 2026 Kenny Caldieraro · Webplayground</span>
+  <nav>
+    <a href="confidentialite.html" data-i18n="n1">Confidentialité</a>
+    <a href="cgu.html" data-i18n="n2">Conditions d'utilisation</a>
+    <a href="mailto:contact@webplayground.fr">Contact</a>
+  </nav>
+</footer>
+
+<script>
+const LEGENDES = {
+  fr: [
+    "<strong>1950, après-guerre.</strong> Maisons de briques, tuiles rouges, boulangerie et café sous leurs auvents rayés.",
+    "<strong>1975, les années béton.</strong> Une barre d'immeubles et une tour remplacent une partie des maisons ; la voiture prend de la place.",
+    "<strong>2000, verre et acier.</strong> Tours de bureaux, galerie marchande et retour du tramway. L'église et le pont restent.",
+    "<strong>2025, la ville de demain.</strong> Bois, toits végétaux, panneaux solaires, rues rendues aux piétons et aux vélos."
+  ],
+  en: [
+    "<strong>1950, post-war.</strong> Brick townhouses, red tiled roofs, a bakery and a café under striped awnings.",
+    "<strong>1975, the concrete years.</strong> An apartment slab and a tower replace some houses; cars take over the street.",
+    "<strong>2000, glass and steel.</strong> Office towers, a shopping mall and the return of the tram. The church and the bridge remain.",
+    "<strong>2025, the city of tomorrow.</strong> Timber, green roofs, solar panels, streets given back to walkers and bikes."
+  ]
+};
+const EN = {
+  accroche: "Found a town in 1950 and grow it into the city of tomorrow.",
+  prix: "Free, no ads, works offline. iPhone, iPad and Android.",
+  t_epoques: "One crossroads, four eras",
+  i_epoques: "Every building keeps the style of the year it was built. Slide through time.",
+  l_temps: "Year",
+  t_jeu: "A real city in your pocket",
+  i_jeu: "The depth of the great city builders, designed for your fingers, in portrait or landscape.",
+  f1_t: "Draw, zone, watch it grow", f1: "Streets, avenues, trams, power, water and sewers: neighborhoods grow denser when you serve them well.",
+  f2_t: "Make the call", f2: "A chemical plant, a strike, a festival: every choice has a price and consequences you can see in the city.",
+  f3_t: "Day, night and seasons", f3: "Windows light up at dusk, snow falls in winter, and the wind carries factory smoke.",
+  a1_t: "Districts and policies", a1: "Local taxes, pedestrian zones, tourism or high-tech specializations.",
+  a2_t: "Pollution and climate", a2: "Air, water, soil, noise and carbon footprint, with the wind playing its part.",
+  a3_t: "Neighboring cities", a3: "Sell your power, buy water, trade your waste.",
+  a4_t: "20 Game Center achievements", a4: "From the first house to the megacity of 2050.",
+  a5_t: "Your games everywhere", a5: "iCloud saves across iPhone and iPad, three save slots.",
+  a6_t: "English and French", a6: "Guided tutorial, sandbox mode, scenarios and photo mode.",
+  t_presse: "Press and creators",
+  p_presse: "Logo, icon, illustrations, screenshots and descriptions in English and French, free to use when writing about the game.",
+  b_presse: "Download the press kit",
+  t_aide: "Support",
+  q1: "A question, a bug, an idea?",
+  q2: "Is my game saved?", r2: "Yes, automatically every in-game year and when you close the app. On iPhone and iPad it also follows your iCloud account.",
+  q3: "Do I need an Internet connection?", r3: "No, the game works fully offline.",
+  n1: "Privacy", n2: "Terms of use"
+};
+const FR = {};
+document.querySelectorAll("[data-i18n]").forEach(el => FR[el.dataset.i18n] = el.textContent);
+let lang = "fr";
+const BADGES = {
+  fr: { apple: "img/appstore_en.svg", google: "img/googleplay_fr.png" },
+  en: { apple: "img/appstore_en.svg", google: "img/googleplay_en.png" }
+};
+const altFr = new Map();
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  const dict = l === "en" ? EN : FR;
+  document.querySelectorAll("[data-i18n]").forEach(el => { if (dict[el.dataset.i18n]) el.textContent = dict[el.dataset.i18n]; });
+  document.querySelectorAll("[data-alt-en]").forEach(el => {
+    if (!altFr.has(el)) altFr.set(el, el.alt);
+    el.alt = l === "en" ? el.dataset.altEn : altFr.get(el);
+  });
+  document.querySelectorAll("[data-badge]").forEach(el => el.src = BADGES[l][el.dataset.badge]);
+  document.querySelectorAll(".langue button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === l));
+  try { localStorage.setItem("metropix-lang", l); } catch (e) {}
+  showEra(current);
+}
+// curseur des époques
+const imgs = [...document.querySelectorAll(".scene img")];
+const annee = document.querySelector(".annee");
+const range = document.getElementById("temps");
+const legende = document.querySelector(".legende");
+const reperes = [...document.querySelectorAll(".reperes button")];
+let current = 0;
+function showEra(i) {
+  current = i;
+  imgs.forEach((im, k) => im.classList.toggle("actif", k === i));
+  annee.textContent = imgs[i].dataset.annee;
+  range.value = i;
+  range.setAttribute("aria-valuetext", imgs[i].dataset.annee);
+  reperes.forEach((b, k) => b.setAttribute("aria-pressed", k === i));
+  legende.innerHTML = LEGENDES[lang][i];
+}
+range.addEventListener("input", () => showEra(+range.value));
+reperes.forEach(b => b.addEventListener("click", () => showEra(+b.dataset.i)));
+document.querySelectorAll(".langue button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+let saved = null;
+try { saved = localStorage.getItem("metropix-lang"); } catch (e) {}
+setLang(saved || ((navigator.language || "fr").startsWith("fr") ? "fr" : "en"));
+</script>
 </body>
 </html>
