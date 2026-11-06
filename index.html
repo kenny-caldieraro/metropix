@@ -49,17 +49,31 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 .hero { position: relative; min-height: min(100svh, 920px); display: grid; align-items: end; overflow: hidden; }
 .hero picture, .hero picture img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hero::after { content: ""; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(20,23,38,.15) 0%, rgba(20,23,38,0) 35%, rgba(20,23,38,.75) 78%, var(--nuit) 100%); }
+  background:
+    linear-gradient(90deg, rgba(20,23,38,.88) 0%, rgba(20,23,38,.6) 38%, rgba(20,23,38,0) 62%),
+    linear-gradient(180deg, rgba(20,23,38,.1) 0%, rgba(20,23,38,0) 30%, rgba(20,23,38,.7) 80%, var(--nuit) 100%); }
+@media (max-width: 900px) {
+  .hero::after { background: linear-gradient(180deg, rgba(20,23,38,.35) 0%, rgba(20,23,38,.78) 30%, rgba(20,23,38,.86) 70%, var(--nuit) 100%); }
+}
 .hero-inner { position: relative; z-index: 1; width: min(1180px, 100% - 40px); margin: 0 auto; padding: 0 0 clamp(40px, 8vh, 96px); }
 .marque { display: flex; align-items: center; gap: 18px; }
 .marque img { width: clamp(64px, 9vw, 96px); border-radius: 22%; box-shadow: 0 10px 30px rgba(0,0,0,.45); }
 h1 { font: 700 clamp(2.6rem, 9vw, 7rem)/.9 var(--chiffres); margin: 0; color: var(--or); text-transform: uppercase;
   text-shadow: 0 .07em 0 #6b4a12, 0 .1em .4em rgba(0,0,0,.5); }
-.accroche { font-size: clamp(1.2rem, 2.4vw, 1.6rem); max-width: 30ch; margin: 18px 0 28px; line-height: 1.35; }
+.accroche { font: 700 clamp(1.5rem, 3vw, 2.2rem)/1.2 var(--texte); max-width: 22ch; margin: 22px 0 26px; }
 .stores { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
 .stores a { display: block; }
 .stores img { height: 54px; width: auto; }  /* même hauteur pour les deux badges officiels */
-.prix { color: var(--brume); font-size: .95rem; margin-top: 14px; }
+.arguments { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 0 0 26px; padding: 0; list-style: none; font-weight: 700; font-size: 1.1rem; }
+.arguments li { display: flex; align-items: center; gap: 8px; }
+.arguments li::before { content: ""; width: 14px; height: 14px; background: var(--or);
+  clip-path: polygon(0 55%, 18% 37%, 40% 58%, 82% 12%, 100% 30%, 40% 92%); }
+.nostalgie { color: #c9cdd9; font-size: 1.1rem; max-width: 44ch; margin: -10px 0 24px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 50px; align-items: end; }
+.paysage { border-radius: 30px; padding: 10px; background: #232634; box-shadow: inset 0 0 0 2px #3a3f52, 0 30px 80px rgba(0,0,0,.6);
+  transform: rotate(-2deg); }
+.paysage video { display: block; width: 100%; border-radius: 22px; aspect-ratio: 16 / 9; object-fit: cover; background: var(--crepuscule); }
+.paysage figcaption { position: absolute; left: -9999px; }
 .qr { display: none; align-items: center; gap: 12px; margin-left: 8px; color: var(--brume); font-size: .9rem; line-height: 1.3; }
 .qr span { max-width: 9.5em; }
 .qr img { width: 76px; height: 76px; border-radius: 8px; image-rendering: pixelated; }
@@ -100,6 +114,39 @@ h1 { font: 700 clamp(2.6rem, 9vw, 7rem)/.9 var(--chiffres); margin: 0; color: va
 .jeu { width: min(1180px, 100% - 40px); margin: clamp(80px, 12vw, 150px) auto 0; }
 .film { margin-top: 36px; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.5); background: var(--crepuscule); }
 .film video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+.pieges { width: min(1180px, 100% - 40px); margin: clamp(80px, 12vw, 150px) auto 0; display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 50px; align-items: center; }
+.pieges h2 { font: 400 clamp(2.4rem, 6vw, 4.2rem)/1 var(--pixel); margin: 0 0 14px; }
+.pieges p { color: var(--brume); max-width: 46ch; margin: 0; }
+.pieges ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.pieges li { display: flex; gap: 16px; align-items: baseline; padding: 16px 20px; border-radius: 12px; background: rgba(43,51,82,.55); font-size: 1.1rem; }
+.pieges li strong { color: var(--lueur); font-weight: 700; min-width: 8.5em; }
+.histoire { width: min(1000px, 100% - 40px); margin: clamp(90px, 13vw, 160px) auto 0; display: grid;
+  grid-template-columns: 320px minmax(0, 1fr); gap: 50px; align-items: center; }
+.histoire .avatar { width: 320px; aspect-ratio: 1; border-radius: 24px; background: var(--crepuscule); image-rendering: pixelated;
+  box-shadow: 0 20px 50px rgba(0,0,0,.45); object-fit: cover; }
+.histoire h2 { font: 400 clamp(2.4rem, 6vw, 4.2rem)/1 var(--pixel); margin: 0 0 18px; }
+.histoire p { font-size: 1.15rem; line-height: 1.7; max-width: 58ch; margin: 0 0 16px; }
+.histoire .signature { color: var(--lueur); font-weight: 700; margin-top: 22px; }
+.histoire .clin { color: var(--brume); font-size: 1rem; }
+@media (max-width: 760px) { .histoire { grid-template-columns: 1fr; gap: 24px; } .histoire .avatar { width: 100%; max-width: 420px; } }
+.final { position: relative; margin-top: clamp(90px, 13vw, 160px); min-height: 520px; display: grid; place-items: center; text-align: center; overflow: hidden; }
+.final img.fond { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.final::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, var(--nuit) 0%, rgba(20,23,38,.55) 30%, rgba(20,23,38,.7) 70%, var(--nuit) 100%); }
+.final > div { position: relative; z-index: 2; padding: 40px 20px; }
+.final img.icone { width: 112px; border-radius: 22%; margin: 0 auto 20px; box-shadow: 0 16px 40px rgba(0,0,0,.5); }
+.final h2 { font: 400 clamp(2.6rem, 7vw, 5rem)/1 var(--pixel); margin: 0 0 22px; }
+.final .stores { justify-content: center; }
+.barre { position: fixed; left: 10px; right: 10px; bottom: 10px; z-index: 20; display: none; align-items: center; gap: 12px;
+  padding: 10px 10px 10px 12px; border-radius: 16px; background: rgba(28,32,52,.94); backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.5); transform: translateY(140%); transition: transform .35s ease; }
+.barre.visible { transform: none; }
+.barre img { width: 42px; height: 42px; border-radius: 22%; }
+.barre div { flex: 1; line-height: 1.25; }
+.barre strong { display: block; }
+.barre span { color: var(--brume); font-size: .9rem; }
+.barre a { padding: 12px 18px; border-radius: 10px; background: var(--or); color: var(--nuit); font-weight: 700; text-decoration: none; }
+@media (prefers-reduced-motion: reduce) { .barre { transition: none; } .paysage { transform: none; } }
 .vitrine { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 3vw, 40px); align-items: start; margin-top: 36px; }
 .vitrine figure { margin: 0; }
 .vitrine figure:nth-child(2) { margin-top: 60px; }
@@ -127,7 +174,14 @@ footer { width: min(1180px, 100% - 40px); margin: 110px auto 0; padding: 30px 0 
 footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
 footer a { color: var(--brume); }
 
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 34px; }
+  .paysage { transform: none; max-width: 560px; }
+  .pieges { grid-template-columns: 1fr; gap: 26px; }
+}
 @media (max-width: 760px) {
+  .barre { display: flex; }
+  footer { padding-bottom: 110px; }
   .vitrine { grid-template-columns: 1fr; max-width: 360px; margin-inline: auto; }
   .vitrine figure:nth-child(2) { margin-top: 0; }
   .presse { grid-template-columns: 1fr; }
@@ -146,20 +200,33 @@ footer a { color: var(--brume); }
     <button type="button" data-lang="fr" aria-pressed="true">FR</button>
     <button type="button" data-lang="en" aria-pressed="false">EN</button>
   </div>
-  <div class="hero-inner">
+  <div class="hero-inner hero-grid">
+    <div>
     <div class="marque">
       <img src="icon.png" alt="" width="96" height="96">
       <h1>Metropix</h1>
     </div>
-    <p class="accroche" data-i18n="accroche">Fondez une ville en 1950 et faites-la grandir jusqu'à la ville de demain.</p>
+    <p class="accroche" data-i18n="accroche">Bâtissez votre ville. Regardez-la traverser les époques.</p>
+    <p class="nostalgie" data-i18n="nostalgie">Le jeu de gestion de ville de votre enfance, avec trente ans de nouveautés, dans votre poche.</p>
+    <ul class="arguments">
+      <li data-i18n="g1">Gratuit</li>
+      <li data-i18n="g2">Sans pub</li>
+      <li data-i18n="g3">Sans connexion</li>
+    </ul>
     <div class="stores">
       <a href="https://apps.apple.com/app/id6831504134" data-store="apple">
         <img data-badge="apple" src="img/appstore_fr.svg" alt="Télécharger dans l'App Store" data-alt-en="Download on the App Store"></a>
-      <a href="https://play.google.com/store/apps/details?id=com.kennycaldieraro.metropix" data-store="google">
+      <a href="https://play.google.com/store/apps/details?id=com.kennycaldieraro.metropix&amp;referrer=utm_source%3Dmetropix.fr%26utm_medium%3Dsite" data-store="google">
         <img data-badge="google" src="img/googleplay_fr.png" alt="Disponible sur Google Play" data-alt-en="Get it on Google Play"></a>
       <div class="qr"><img src="img/qr.png" alt="" width="76" height="76"><span data-i18n="qr">Scannez avec votre téléphone</span></div>
     </div>
-    <p class="prix" data-i18n="prix">Gratuit, sans publicité, sans connexion. iPhone, iPad et Android.</p>
+    </div>
+    <figure class="paysage">
+      <video autoplay muted loop playsinline preload="auto" poster="img/bande-annonce.jpg" aria-hidden="true">
+        <source src="img/boucle.mp4" type="video/mp4">
+      </video>
+      <figcaption>Le jeu en mouvement</figcaption>
+    </figure>
   </div>
 </header>
 
@@ -184,6 +251,19 @@ footer a { color: var(--brume); }
         <button type="button" data-i="3" aria-pressed="false">2025</button>
       </div>
     </div>
+  </section>
+
+  <section class="pieges" aria-labelledby="t-pieges">
+    <div>
+      <h2 id="t-pieges" data-i18n="t_pieges">Pas de pièges</h2>
+      <p data-i18n="i_pieges">Gratuit pour de vrai. Le jeu est fait pour qu'on y joue, pas pour vous faire payer.</p>
+    </div>
+    <ul>
+      <li><strong data-i18n="p1_t">Pas de pub</strong><span data-i18n="p1">Jamais de vidéo à regarder, jamais de bannière.</span></li>
+      <li><strong data-i18n="p2_t">Pas de chrono</strong><span data-i18n="p2">Pas d'énergie à recharger ni de chantier qui dure des heures.</span></li>
+      <li><strong data-i18n="p3_t">Pas d'achats</strong><span data-i18n="p3">Rien à payer pour aller plus vite : tout le jeu est là.</span></li>
+      <li><strong data-i18n="p4_t">Pas de collecte</strong><span data-i18n="p4">Aucune donnée envoyée. Votre ville reste chez vous.</span></li>
+    </ul>
   </section>
 
   <section class="jeu" aria-labelledby="t-jeu">
@@ -221,6 +301,18 @@ footer a { color: var(--brume); }
     </ul>
   </section>
 
+  <section class="histoire" aria-labelledby="t-histoire">
+    <img class="avatar" src="img/souvenir.jpg" alt="Un bureau d'enfant le soir : un ordinateur des années 90, des disquettes et le livret d'un jeu de ville" data-alt-en="A child's desk at night: a 1990s home computer, floppy disks and a city game manual" width="320" height="320" loading="lazy">
+    <div>
+      <h2 id="t-histoire" data-i18n="t_histoire">Pourquoi Metropix</h2>
+      <p data-i18n="h1">J'avais huit ans et un Amiga 500. J'ai passé des soirées entières sur SimCity à gérer ma ville : ses habitants, leurs besoins, les quartiers qui grandissent ou qui se vident.</p>
+      <p data-i18n="h2">Et puis un jour, j'ai perdu le livret du jeu. Sans lui, impossible de lancer une partie : il fallait taper un mot de passe imprimé dedans, c'était la protection contre la copie. Fin de l'histoire.</p>
+      <p data-i18n="h3">Trente ans plus tard, j'ai cherché ce jeu-là sur mon téléphone : le style d'avant, mais avec tout ce qu'un jeu de ville sait faire aujourd'hui. Je ne l'ai pas trouvé, alors je l'ai fait.</p>
+      <p class="signature" data-i18n="h4">Kenny, 40 ans, créateur de Metropix</p>
+      <p class="clin" data-i18n="h5">Promis, ici, pas de mot de passe à taper.</p>
+    </div>
+  </section>
+
   <section class="presse" aria-labelledby="t-aide">
     <div>
       <h2 id="t-aide" data-i18n="t_aide">Assistance</h2>
@@ -236,8 +328,26 @@ footer a { color: var(--brume); }
   </section>
 </main>
 
+<section class="final" aria-labelledby="t-final">
+  <img class="fond" src="img/panorama.jpg" alt="" loading="lazy">
+  <div>
+    <img class="icone" src="icon.png" alt="" width="112" height="112">
+    <h2 id="t-final" data-i18n="t_final">Votre ville vous attend.</h2>
+    <div class="stores">
+      <a href="https://apps.apple.com/app/id6831504134" data-store="apple"><img data-badge="apple" src="img/appstore_fr.svg" alt="Télécharger dans l'App Store" data-alt-en="Download on the App Store"></a>
+      <a href="https://play.google.com/store/apps/details?id=com.kennycaldieraro.metropix&amp;referrer=utm_source%3Dmetropix.fr%26utm_medium%3Dsite" data-store="google"><img data-badge="google" src="img/googleplay_fr.png" alt="Disponible sur Google Play" data-alt-en="Get it on Google Play"></a>
+    </div>
+  </div>
+</section>
+
+<div class="barre" aria-hidden="true">
+  <img src="icon.png" alt="">
+  <div><strong>Metropix</strong><span data-i18n="barre">Gratuit, sans pub</span></div>
+  <a href="telecharger.html" tabindex="-1" data-i18n="installer">Installer</a>
+</div>
+
 <footer>
-  <span>© 2026 Kenny Caldieraro · Webplayground</span>
+  <span>© 2026 Kenny Caldieraro · Webplayground<br><small data-i18n="marque">SimCity est une marque d'Electronic Arts. Metropix est un jeu indépendant, sans lien avec Electronic Arts.</small></span>
   <nav>
     <a href="nouveautes.html" data-i18n="n0">Nouveautés</a>
     <a href="metropix-presse.zip" download data-i18n="n3">Kit presse</a>
@@ -249,7 +359,24 @@ footer a { color: var(--brume); }
 
 <script>
 const EN = {
-  accroche: "Found a town in 1950 and grow it into the city of tomorrow.",
+  accroche: "Build your city. Watch it live through the eras.",
+  nostalgie: "The city builder of your childhood, with thirty years of new ideas, in your pocket.",
+  g1: "Free", g2: "No ads", g3: "Works offline",
+  t_pieges: "No catch",
+  i_pieges: "Free for real. The game is made to be played, not to make you pay.",
+  p1_t: "No ads", p1: "Never a video to watch, never a banner.",
+  p2_t: "No timers", p2: "No energy to refill, no build that takes hours.",
+  p3_t: "No purchases", p3: "Nothing to buy to go faster: the whole game is there.",
+  p4_t: "No tracking", p4: "No data sent anywhere. Your city stays with you.",
+  t_final: "Your city is waiting.",
+  t_histoire: "Why Metropix",
+  h1: "I was eight and I had an Amiga 500. I spent whole evenings on SimCity running my city: its people, their needs, neighborhoods that grew or emptied out.",
+  h2: "Then one day I lost the game's manual. Without it you couldn't start a game: you had to type a password printed inside, it was the copy protection. End of story.",
+  h3: "Thirty years later, I looked for that game on my phone: the old-school style, with everything a city builder can do today. I couldn't find it, so I made it.",
+  h4: "Kenny, 40, creator of Metropix",
+  h5: "Promise: no password to type here.",
+  marque: "SimCity is a trademark of Electronic Arts. Metropix is an independent game, not affiliated with Electronic Arts.",
+  barre: "Free, no ads", installer: "Install",
   prix: "Free, no ads, works offline. iPhone, iPad and Android.",
   t_epoques: "One crossroads, four eras",
   i_epoques: "The same crossroads in 1950, 1975, 2000 and 2025. In the game, every building keeps the style of the year it was built.",
@@ -277,6 +404,18 @@ const EN = {
 const FR = {};
 document.querySelectorAll("[data-i18n]").forEach(el => FR[el.dataset.i18n] = el.textContent);
 let lang = "fr";
+{
+  const barre = document.querySelector(".barre");
+  const hero = document.querySelector(".hero");
+  const ua = navigator.userAgent || "";
+  const ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const lien = barre.querySelector("a");
+  if (ios) lien.href = "https://apps.apple.com/app/id6831504134";
+  else if (/Android/.test(ua)) lien.href = "https://play.google.com/store/apps/details?id=com.kennycaldieraro.metropix&referrer=utm_source%3Dmetropix.fr%26utm_medium%3Dsite";
+  new IntersectionObserver(([e]) => barre.classList.toggle("visible", !e.isIntersecting)).observe(hero);
+  // vidéo de l'en-tête : immobile si l'utilisateur limite les animations
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelector(".paysage video").removeAttribute("autoplay");
+}
 // plateforme : un seul badge sur téléphone, les deux et le QR code sur ordinateur
 {
   const ua = navigator.userAgent || "";
@@ -316,8 +455,18 @@ function showEra(i) {
   range.setAttribute("aria-valuetext", imgs[i].dataset.annee);
   reperes.forEach((b, k) => b.setAttribute("aria-pressed", k === i));
 }
-range.addEventListener("input", () => showEra(+range.value));
-reperes.forEach(b => b.addEventListener("click", () => showEra(+b.dataset.i)));
+let auto = null;
+function stopAuto() { if (auto) { clearInterval(auto); auto = null; } }
+range.addEventListener("input", () => { stopAuto(); showEra(+range.value); });
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const obs = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    obs.disconnect();
+    auto = setInterval(() => { if (current >= 3) { stopAuto(); return; } showEra(current + 1); }, 1700);
+  }, { threshold: 0.6 });
+  obs.observe(document.querySelector(".scene"));
+}
+reperes.forEach(b => b.addEventListener("click", () => { stopAuto(); showEra(+b.dataset.i); }));
 document.querySelectorAll(".langue button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
 let saved = null;
 try { saved = localStorage.getItem("metropix-lang"); } catch (e) {}
