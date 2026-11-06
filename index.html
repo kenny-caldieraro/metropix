@@ -48,8 +48,7 @@ h1 { font: 700 clamp(2.6rem, 9vw, 7rem)/.9 var(--chiffres); margin: 0; color: va
 .accroche { font-size: clamp(1.2rem, 2.4vw, 1.6rem); max-width: 30ch; margin: 18px 0 28px; line-height: 1.35; }
 .stores { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
 .stores a { display: block; }
-.stores img { height: 54px; width: auto; }
-.stores img[data-badge="google"] { height: 80px; margin: -13px -10px; }
+.stores img { height: 54px; width: auto; }  /* même hauteur pour les deux badges officiels */
 .prix { color: var(--brume); font-size: .95rem; margin-top: 14px; }
 .langue { position: absolute; top: 18px; right: 20px; z-index: 2; display: flex; gap: 4px;
   background: rgba(20,23,38,.6); border-radius: 999px; padding: 4px; backdrop-filter: blur(6px); }
@@ -113,8 +112,7 @@ footer a { color: var(--brume); }
   .vitrine { grid-template-columns: 1fr; max-width: 360px; margin-inline: auto; }
   .vitrine figure:nth-child(2) { margin-top: 0; }
   .presse { grid-template-columns: 1fr; }
-  .stores img { height: 48px; }
-  .stores img[data-badge="google"] { height: 71px; margin: -11px -9px; }
+  .stores img { height: 46px; }
 }
 </style>
 </head>
@@ -137,7 +135,7 @@ footer a { color: var(--brume); }
     <p class="accroche" data-i18n="accroche">Fondez une ville en 1950 et faites-la grandir jusqu'à la ville de demain.</p>
     <div class="stores">
       <a href="https://apps.apple.com/app/id6831504134" data-i18n-href="apple">
-        <img data-badge="apple" src="img/appstore_en.svg" alt="Télécharger dans l'App Store" data-alt-en="Download on the App Store"></a>
+        <img data-badge="apple" src="img/appstore_fr.svg" alt="Télécharger dans l'App Store" data-alt-en="Download on the App Store"></a>
       <a href="https://play.google.com/store/apps/details?id=com.kennycaldieraro.metropix">
         <img data-badge="google" src="img/googleplay_fr.png" alt="Disponible sur Google Play" data-alt-en="Get it on Google Play"></a>
     </div>
@@ -273,7 +271,7 @@ const FR = {};
 document.querySelectorAll("[data-i18n]").forEach(el => FR[el.dataset.i18n] = el.textContent);
 let lang = "fr";
 const BADGES = {
-  fr: { apple: "img/appstore_en.svg", google: "img/googleplay_fr.png" },
+  fr: { apple: "img/appstore_fr.svg", google: "img/googleplay_fr.png" },
   en: { apple: "img/appstore_en.svg", google: "img/googleplay_en.png" }
 };
 const altFr = new Map();
