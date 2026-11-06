@@ -164,7 +164,7 @@ footer a { color: var(--brume); }
 <main>
   <section class="epoques" aria-labelledby="t-epoques">
     <h2 id="t-epoques" data-i18n="t_epoques">Un carrefour, quatre époques</h2>
-    <p class="intro" data-i18n="i_epoques">Chaque bâtiment garde le style de l'année où il a été construit. Faites glisser le temps.</p>
+    <p class="intro" data-i18n="i_epoques">Le même carrefour en 1950, 1975, 2000 et 2025. Dans le jeu, chaque bâtiment garde le style de son année de construction.</p>
     <div class="scene">
       <img class="pixel actif" src="img/epoque_1950.jpg" alt="Le carrefour en 1950" data-annee="1950">
       <img class="pixel" src="img/epoque_1975.jpg" alt="Le carrefour en 1975" data-annee="1975" loading="lazy">
@@ -182,12 +182,11 @@ footer a { color: var(--brume); }
         <button type="button" data-i="3" aria-pressed="false">2025</button>
       </div>
     </div>
-    <p class="legende" aria-live="polite"></p>
   </section>
 
   <section class="jeu" aria-labelledby="t-jeu">
     <h2 id="t-jeu" data-i18n="t_jeu">Une vraie ville dans la poche</h2>
-    <p class="intro" data-i18n="i_jeu">La profondeur des grands jeux de gestion, pensée pour le doigt, en portrait comme en paysage.</p>
+    <p class="intro" data-i18n="i_jeu">Tout se joue au doigt, en portrait comme en paysage.</p>
     <div class="vitrine">
       <figure>
         <div class="telephone"><img src="img/jeu_centre.jpg" alt="Le centre-ville vu de dessus, avec la barre d'outils" loading="lazy"></div>
@@ -242,28 +241,14 @@ footer a { color: var(--brume); }
 </footer>
 
 <script>
-const LEGENDES = {
-  fr: [
-    "<strong>1950, après-guerre.</strong> Maisons de briques, tuiles rouges, boulangerie et café sous leurs auvents rayés.",
-    "<strong>1975, les années béton.</strong> Une tour et des immeubles modernes remplacent une partie des maisons ; feux rouges et voitures envahissent le carrefour.",
-    "<strong>2000, verre et acier.</strong> Bureaux vitrés, galerie marchande et retour du tramway. L'église, le pont et la fontaine restent.",
-    "<strong>2025, la ville de demain.</strong> Bois, toits végétaux, panneaux solaires, rues rendues aux piétons et aux vélos."
-  ],
-  en: [
-    "<strong>1950, post-war.</strong> Brick townhouses, red tiled roofs, a bakery and a café under striped awnings.",
-    "<strong>1975, the concrete years.</strong> A tower and modern blocks replace some houses; traffic lights and cars take over the crossroads.",
-    "<strong>2000, glass and steel.</strong> Glass offices, a shopping mall and the return of the tram. The church, the bridge and the fountain remain.",
-    "<strong>2025, the city of tomorrow.</strong> Timber, green roofs, solar panels, streets given back to walkers and bikes."
-  ]
-};
 const EN = {
   accroche: "Found a town in 1950 and grow it into the city of tomorrow.",
   prix: "Free, no ads, works offline. iPhone, iPad and Android.",
   t_epoques: "One crossroads, four eras",
-  i_epoques: "Every building keeps the style of the year it was built. Slide through time.",
+  i_epoques: "The same crossroads in 1950, 1975, 2000 and 2025. In the game, every building keeps the style of the year it was built.",
   l_temps: "Year",
   t_jeu: "A real city in your pocket",
-  i_jeu: "The depth of the great city builders, designed for your fingers, in portrait or landscape.",
+  i_jeu: "Everything is played with your finger, in portrait or landscape.",
   f1_t: "Draw, zone, watch it grow", f1: "Streets, avenues, trams, power, water and sewers: neighborhoods grow denser when you serve them well.",
   f2_t: "Make the call", f2: "A chemical plant, a strike, a festival: every choice has a price and consequences you can see in the city.",
   f3_t: "Day, night and seasons", f3: "Windows light up at dusk, snow falls in winter, and the wind carries factory smoke.",
@@ -314,7 +299,6 @@ function setLang(l) {
 const imgs = [...document.querySelectorAll(".scene img")];
 const annee = document.querySelector(".annee");
 const range = document.getElementById("temps");
-const legende = document.querySelector(".legende");
 const reperes = [...document.querySelectorAll(".reperes button")];
 let current = 0;
 function showEra(i) {
@@ -324,7 +308,6 @@ function showEra(i) {
   range.value = i;
   range.setAttribute("aria-valuetext", imgs[i].dataset.annee);
   reperes.forEach((b, k) => b.setAttribute("aria-pressed", k === i));
-  legende.innerHTML = LEGENDES[lang][i];
 }
 range.addEventListener("input", () => showEra(+range.value));
 reperes.forEach(b => b.addEventListener("click", () => showEra(+b.dataset.i)));
