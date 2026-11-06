@@ -73,7 +73,12 @@ h1 { font: 700 clamp(2.6rem, 9vw, 7rem)/.9 var(--chiffres); margin: 0; color: va
 .paysage { border-radius: 30px; padding: 10px; background: #232634; box-shadow: inset 0 0 0 2px #3a3f52, 0 30px 80px rgba(0,0,0,.6);
   transform: rotate(-2deg); }
 .paysage video { display: block; width: 100%; border-radius: 22px; aspect-ratio: 16 / 9; object-fit: cover; background: var(--crepuscule); }
+.paysage { position: relative; }
 .paysage figcaption { position: absolute; left: -9999px; }
+.lecture { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 10px;
+  padding: 14px 22px; border: 0; border-radius: 999px; background: rgba(20,23,38,.85); color: var(--creme); font: 700 1rem var(--texte); cursor: pointer; }
+.lecture::before { content: ""; width: 0; height: 0; border-style: solid; border-width: 8px 0 8px 13px; border-color: transparent transparent transparent var(--or); }
+.lecture[hidden] { display: none; }
 .qr { display: none; align-items: center; gap: 12px; margin-left: 8px; color: var(--brume); font-size: .9rem; line-height: 1.3; }
 .qr span { max-width: 9.5em; }
 .qr img { width: 76px; height: 76px; border-radius: 8px; image-rendering: pixelated; }
@@ -127,7 +132,8 @@ h1 { font: 700 clamp(2.6rem, 9vw, 7rem)/.9 var(--chiffres); margin: 0; color: va
   box-shadow: 0 20px 50px rgba(0,0,0,.45); object-fit: cover; }
 .histoire h2 { font: 400 clamp(2.4rem, 6vw, 4.2rem)/1 var(--pixel); margin: 0 0 18px; }
 .histoire p { font-size: 1.15rem; line-height: 1.7; max-width: 58ch; margin: 0 0 16px; }
-.histoire .signature { color: var(--lueur); font-weight: 700; margin-top: 22px; }
+.histoire .signature { color: var(--lueur); font-weight: 700; margin-top: 24px; display: flex; align-items: center; gap: 14px; }
+.histoire .signature img { width: 56px; height: 56px; border-radius: 14px; image-rendering: pixelated; }
 .histoire .clin { color: var(--brume); font-size: 1rem; }
 @media (max-width: 760px) { .histoire { grid-template-columns: 1fr; gap: 24px; } .histoire .avatar { width: 100%; max-width: 420px; } }
 .final { position: relative; margin-top: clamp(90px, 13vw, 160px); min-height: 520px; display: grid; place-items: center; text-align: center; overflow: hidden; }
@@ -222,9 +228,10 @@ footer a { color: var(--brume); }
     </div>
     </div>
     <figure class="paysage">
-      <video autoplay muted loop playsinline preload="auto" poster="img/bande-annonce.jpg" aria-hidden="true">
+      <video muted loop playsinline preload="auto" poster="img/bande-annonce.jpg" aria-hidden="true">
         <source src="img/boucle.mp4" type="video/mp4">
       </video>
+      <button type="button" class="lecture" hidden data-i18n="voir">Voir le jeu</button>
       <figcaption>Le jeu en mouvement</figcaption>
     </figure>
   </div>
@@ -308,7 +315,7 @@ footer a { color: var(--brume); }
       <p data-i18n="h1">J'avais huit ans et un Amiga 500. J'ai passé des soirées entières sur SimCity à gérer ma ville : ses habitants, leurs besoins, les quartiers qui grandissent ou qui se vident.</p>
       <p data-i18n="h2">Et puis un jour, j'ai perdu le livret du jeu. Sans lui, impossible de lancer une partie : il fallait taper un mot de passe imprimé dedans, c'était la protection contre la copie. Fin de l'histoire.</p>
       <p data-i18n="h3">Trente ans plus tard, j'ai cherché ce jeu-là sur mon téléphone : le style d'avant, mais avec tout ce qu'un jeu de ville sait faire aujourd'hui. Je ne l'ai pas trouvé, alors je l'ai fait.</p>
-      <p class="signature" data-i18n="h4">Kenny, 40 ans, créateur de Metropix</p>
+      <p class="signature"><img src="img/kenny.jpg" alt="" width="56" height="56"><span data-i18n="h4">Kenny, 40 ans, créateur de Metropix</span></p>
       <p class="clin" data-i18n="h5">Promis, ici, pas de mot de passe à taper.</p>
     </div>
   </section>
@@ -376,7 +383,7 @@ const EN = {
   h4: "Kenny, 40, creator of Metropix",
   h5: "Promise: no password to type here.",
   marque: "SimCity is a trademark of Electronic Arts. Metropix is an independent game, not affiliated with Electronic Arts.",
-  barre: "Free, no ads", installer: "Install",
+  barre: "Free, no ads", installer: "Install", voir: "Watch the game",
   prix: "Free, no ads, works offline. iPhone, iPad and Android.",
   t_epoques: "One crossroads, four eras",
   i_epoques: "The same crossroads in 1950, 1975, 2000 and 2025. In the game, every building keeps the style of the year it was built.",
@@ -413,8 +420,14 @@ let lang = "fr";
   if (ios) lien.href = "https://apps.apple.com/app/id6831504134";
   else if (/Android/.test(ua)) lien.href = "https://play.google.com/store/apps/details?id=com.kennycaldieraro.metropix&referrer=utm_source%3Dmetropix.fr%26utm_medium%3Dsite";
   new IntersectionObserver(([e]) => barre.classList.toggle("visible", !e.isIntersecting)).observe(hero);
-  // vidéo de l'en-tête : immobile si l'utilisateur limite les animations
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelector(".paysage video").removeAttribute("autoplay");
+  // vidéo de l'en-tête : lancée par le site ; si l'appareil refuse (économie d'énergie)
+  // ou si l'utilisateur limite les animations, un bouton permet de la lancer
+  const video = document.querySelector(".paysage video");
+  const bouton = document.querySelector(".lecture");
+  const montrer = () => { bouton.hidden = false; };
+  bouton.addEventListener("click", () => { bouton.hidden = true; video.play().catch(montrer); });
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) montrer();
+  else video.play().catch(montrer);
 }
 // plateforme : un seul badge sur téléphone, les deux et le QR code sur ordinateur
 {
